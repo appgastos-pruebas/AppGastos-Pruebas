@@ -1,0 +1,453 @@
+:root {
+    --alto-menu: 61px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    /* Con 16px o más, iOS no acerca la pantalla al tocar un campo. */
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: #1a1a1a;
+    background: #ffffff;
+}
+
+/* Blazor enfoca el título al cambiar de pantalla, para los lectores de pantalla. No hace falta verlo. */
+h1:focus {
+    outline: none;
+}
+
+.pantalla {
+    max-width: 600px;
+    margin: 0 auto;
+    /* Respeta la muesca y la barra de gestos del teléfono. */
+    /* Abajo deja espacio para el menú fijo, para que no tape el último botón. */
+    padding: calc(1rem + env(safe-area-inset-top)) calc(1rem + env(safe-area-inset-right)) calc(var(--alto-menu) + 1rem + env(safe-area-inset-bottom)) calc(1rem + env(safe-area-inset-left));
+}
+
+.menu-inferior {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    gap: 0.125rem;
+    min-height: var(--alto-menu);
+    padding: 0.375rem calc(0.25rem + env(safe-area-inset-right)) calc(0.375rem + env(safe-area-inset-bottom)) calc(0.25rem + env(safe-area-inset-left));
+    border-top: 1px solid #8a8a8a;
+    background: #ffffff;
+}
+
+.menu-enlace {
+    display: flex;
+    /* Cada opción ocupa según su texto: "Más" es corto y "Registrar" no cabría en un cuarto de un teléfono angosto. */
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 0.375rem;
+    border-radius: 8px;
+    color: #0d47a1;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+    .menu-enlace.active {
+        color: #ffffff;
+        background: #1565c0;
+    }
+
+/* Grupo de opciones: se escoge una. La escogida es azul fuerte, las demás azul claro y las no disponibles gris. */
+.opciones {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.opciones-dos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.opcion {
+    flex: 1 1 auto;
+    min-height: 48px;
+    padding: 0.25rem 0.5rem;
+    border: 2px solid #1565c0;
+    border-radius: 8px;
+    color: #0d47a1;
+    background: #dbe8f8;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+    .opcion[aria-pressed="true"] {
+        color: #ffffff;
+        background: #1565c0;
+    }
+
+    .opcion:disabled {
+        border-color: #c9c9c9;
+        color: #5f5f5f;
+        background: #c9c9c9;
+        cursor: not-allowed;
+    }
+
+#zona-mensaje {
+    /* Evita que el menú fijo tape el mensaje cuando la pantalla se desplaza hasta él. */
+    scroll-margin-bottom: calc(var(--alto-menu) + 5rem + env(safe-area-inset-bottom));
+    scroll-margin-top: 1rem;
+}
+
+    #zona-mensaje:focus {
+        outline: none;
+    }
+
+.boton {
+    display: block;
+    width: 100%;
+    /* 48px es el tamaño mínimo cómodo para tocar con el dedo. */
+    min-height: 48px;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 0;
+    border-radius: 8px;
+    color: #ffffff;
+    background: #1565c0;
+    font: inherit;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+    /* Excepción pedida por el usuario, solo para "Borrar todas las transacciones". Va antes del gris, que debe ganarle. */
+    .boton-peligro {
+        background: #b3261e;
+    }
+
+    /* Activo es azul y desactivado es gris, en todas las pantallas. */
+    .boton:disabled,
+    .boton-inactivo {
+        color: #5f5f5f;
+        background: #c9c9c9;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+/* Se oculta a la vista sin desactivarlo: el botón que lo representa debe poder abrirlo. */
+.visualmente-oculto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+.mensaje {
+    margin-bottom: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+    .mensaje ul {
+        margin: 0;
+        padding-left: 1.25rem;
+        font-weight: 400;
+    }
+
+    .mensaje p {
+        margin-top: 0;
+    }
+
+.mensaje-exito {
+    border: 1px solid #1b7a3d;
+    color: #0f4f26;
+    background: #e6f4ea;
+}
+
+.mensaje-error {
+    border: 1px solid #b3261e;
+    color: #7a1610;
+    background: #fbe9e7;
+}
+
+.etiqueta {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.campo {
+    display: block;
+    width: 100%;
+    /* Sin esto, el campo de fecha del iPhone puede salirse de la pantalla. */
+    min-width: 0;
+    min-height: 48px;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #8a8a8a;
+    border-radius: 8px;
+    color: inherit;
+    background: #ffffff;
+    font: inherit;
+}
+
+/* Casilla grande y con su texto al lado, cómoda para el dedo. */
+.casilla {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    margin: -0.5rem 0 0.75rem;
+}
+
+    .casilla input {
+        width: 1.25rem;
+        height: 1.25rem;
+        margin: 0;
+    }
+
+.contador {
+    margin: -0.5rem 0 0.75rem;
+    color: #5f5f5f;
+    font-size: 0.875rem;
+}
+
+.fecha-palabras {
+    margin: -0.5rem 0 0.75rem;
+    font-weight: 600;
+}
+
+.lista {
+    margin: 0 0 0.75rem;
+    padding: 0;
+    list-style: none;
+}
+
+.lista-fila {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #d9d9d9;
+    /* Un nombre de cuenta largo y sin espacios no debe salirse de la pantalla. */
+    overflow-wrap: anywhere;
+}
+
+.navegacion-mes {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+    .navegacion-mes strong {
+        flex: 1;
+        text-align: center;
+    }
+
+    .navegacion-mes .boton {
+        width: auto;
+        margin-bottom: 0;
+        padding: 0.75rem 0.625rem;
+    }
+
+.totales {
+    margin: 0 0 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background: #eef3fb;
+    list-style: none;
+}
+
+    .totales li {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.25rem 0;
+    }
+
+    .totales .total-neto {
+        margin-bottom: 0.25rem;
+        border-top: 1px solid #8a8a8a;
+        border-bottom: 1px solid #8a8a8a;
+        font-weight: 600;
+    }
+
+/* Dentro de la confirmación, que ya tiene el mismo fondo: un fondo blanco separa los totales. */
+#confirmacion .totales {
+    background: #ffffff;
+}
+
+/* Oculta los dígitos sin usar type="password": así el teléfono no ofrece guardar el PIN como contraseña. */
+.campo-pin {
+    -webkit-text-security: disc;
+    font-size: 1.5rem;
+    letter-spacing: 0.5rem;
+    text-align: center;
+}
+
+.tabla-testamento {
+    width: 100%;
+    margin-bottom: 0.75rem;
+    border-collapse: collapse;
+}
+
+    .tabla-testamento td {
+        padding: 0.25rem 0;
+        vertical-align: top;
+    }
+
+    .tabla-testamento .descripcion {
+        /* Conserva la sangría del Excel, y un nombre largo no se sale de la pantalla. */
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    .tabla-testamento .cantidad {
+        padding-left: 0.75rem;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .tabla-testamento .negrita {
+        font-weight: 700;
+    }
+
+    /* Es texto, no un botón: la regla de colores de los botones no aplica aquí. */
+    .tabla-testamento .negativo {
+        color: #b3261e;
+    }
+
+    .tabla-testamento .fila-titulo td {
+        font-size: 1.25rem;
+    }
+
+    .tabla-testamento .fila-vacia td {
+        height: 1rem;
+    }
+
+/* La pantalla Más ocupa toda la altura, para que la versión quede justo encima del menú. Sigue siendo
+   parte de la pantalla, no algo fijo: si falta espacio, baja al hacer scroll y nunca tapa el contenido. */
+.pantalla:has(> .pantalla-mas) {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+.pantalla-mas {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.version {
+    margin: auto 0 -0.75rem;
+    padding-top: 1.5rem;
+    color: #5f5f5f;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.zona-peligro {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #8a8a8a;
+}
+
+.confirmar-borrado {
+    margin: 0.5rem 0 0;
+}
+
+    .confirmar-borrado p {
+        margin-top: 0;
+    }
+
+.lista-acciones {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+    .lista-acciones .boton {
+        margin-bottom: 0;
+    }
+
+.aviso {
+    margin-bottom: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    background: #eef3fb;
+}
+
+#blazor-error-ui {
+    color-scheme: light only;
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+.blazor-error-boundary {
+    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
+    padding: 1rem 1rem 1rem 3.7rem;
+    color: white;
+}
+
+    .blazor-error-boundary::after {
+        content: "Ocurrió un error."
+    }
+
+.loading-progress {
+    position: absolute;
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    inset: 20vh 0 auto 0;
+    margin: 0 auto 0 auto;
+}
+
+    .loading-progress circle {
+        fill: none;
+        stroke: #e0e0e0;
+        stroke-width: 0.6rem;
+        transform-origin: 50% 50%;
+        transform: rotate(-90deg);
+    }
+
+        .loading-progress circle:last-child {
+            stroke: #1b6ec2;
+            stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+            transition: stroke-dasharray 0.05s ease-in-out;
+        }
+
+.loading-progress-text {
+    position: absolute;
+    text-align: center;
+    font-weight: bold;
+    inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
+}
+
+    .loading-progress-text:after {
+        content: var(--blazor-load-percentage-text, "Cargando");
+    }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#e65100" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="AG Pruebas" />
+    <title>AppGastos Pruebas</title>
+    <base href="/AppGastos-Pruebas/" />
+    <link href="_framework/dotnet.3419fqgrat.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-Hbu0d0raIEDiOHdvexpxxznIxoGesAnD7YH7AQ/+Z8A=" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link href="manifest.webmanifest" rel="manifest" />
+    <link rel="icon" type="image/png" href="icon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+    <script type="importmap">{
+  "imports": {
+    "./_framework/blazor.webassembly.js": "./_framework/blazor.webassembly.w3qd1tpl0e.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.3419fqgrat.js",
+    "./_framework/dotnet.native.js": "./_framework/dotnet.native.bjoj0wmylw.js",
+    "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.5nc8i5dl74.js"
+  },
+  "scopes": {},
+  "integrity": {
+    "./_framework/blazor.webassembly.js": "sha256-lDXsDYFgm62F+YUvxES7IOTCXYpiHpU3uR45YdC6mq4=",
+    "./_framework/blazor.webassembly.w3qd1tpl0e.js": "sha256-lDXsDYFgm62F+YUvxES7IOTCXYpiHpU3uR45YdC6mq4=",
+    "./_framework/dotnet.3419fqgrat.js": "sha256-Hbu0d0raIEDiOHdvexpxxznIxoGesAnD7YH7AQ/+Z8A=",
+    "./_framework/dotnet.js": "sha256-Hbu0d0raIEDiOHdvexpxxznIxoGesAnD7YH7AQ/+Z8A=",
+    "./_framework/dotnet.native.bjoj0wmylw.js": "sha256-CZ0IVZkLTIvee7n1yVvOitlJWNdj/YjaFgpMgliIM64=",
+    "./_framework/dotnet.native.js": "sha256-CZ0IVZkLTIvee7n1yVvOitlJWNdj/YjaFgpMgliIM64=",
+    "./_framework/dotnet.runtime.5nc8i5dl74.js": "sha256-/3dBg9sj1yLD3h0PDMHnNUXWs/2zWwIMEzom1Xz3Q40=",
+    "./_framework/dotnet.runtime.js": "sha256-/3dBg9sj1yLD3h0PDMHnNUXWs/2zWwIMEzom1Xz3Q40="
+  }
+}</script>
+</head>
+
+<body>
+    <div id="franja-pruebas" style="position:fixed;top:0;left:0;right:0;z-index:2000;padding:calc(0.125rem + env(safe-area-inset-top)) 0 0.125rem;color:#ffffff;background:#e65100;font-size:0.75rem;font-weight:700;text-align:center">PRUEBAS</div><style>.pantalla{padding-top:calc(2.25rem + env(safe-area-inset-top))}</style>
+    <div id="app">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
+
+    <div id="blazor-error-ui">
+        Ocurrió un error inesperado.
+        <a href="." class="reload">Recargar</a>
+        <span class="dismiss">🗙</span>
+    </div>
+    <script src="js/compartir.js"></script>
+    <script src="js/almacen.js"></script>
+    <script src="js/testamento.js"></script>
+    <script src="js/respaldo.js"></script>
+    <script src="js/monto.js"></script>
+    <script src="_framework/blazor.webassembly.w3qd1tpl0e.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js', { updateViaCache: 'none' });</script>
+</body>
+
+</html>
